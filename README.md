@@ -117,7 +117,7 @@ Add single quotes instead of double quotes
      ---
        # Invoke powershell and run the get-process command
        Cmd: "powershell get-Process "
-       # Also works:
+       # A pipe can be used.
        # Cmd: powershell get-process | where { $_.ProcessName -eq 'chrome' }
 
 Save the file and run:
