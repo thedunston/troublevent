@@ -11,6 +11,16 @@ If you are an educator teaching a system administration course, you can edit a c
 
 You may want users to be able to ensure they are typing the right command to give them the expected output.  You can add a command that prints out specific output and the student has to explain which command was executed.
 
+Create security events that require the user to investigate.  Example, brute force a web server, or SSH server on a lab server, or generate a ransomware attack on the lab host.
+
+## TODO:
+
+Add a web server and sqlite to keep track of triblets assigned.
+
+Randomly assign triblets for an assignment, DB backend to track users and the triblets they receive through web auth or some sort of auth.
+
+Run multiple commands to simulate behavior for an investigation.
+
 ## Setup
 
 This program uses Golang and the Viper module.
