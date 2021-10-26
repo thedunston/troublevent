@@ -51,7 +51,9 @@ It is recommended to provide a name so it is easier to know which binary it is.
 
 ### Edit the /etc/dhcp/dhcpd.conf file and change "netmask" to netmasks."  It is best to have the configuration change as real as possible so it simulates a real-world mistake.
 
-`cp -rp fileedit`
+`cp -rp fileedit Week2Lab3`
+
+`cd dhcpd`
 
 `nano replace.yaml`
 
@@ -85,7 +87,7 @@ Fix any issues and then build.
 
 ### Create a binary that runs ps -ef and the student has to determine the command that printed the output.
 
-`cp -rp newcommand ps`
+`cp -rp newcommand Question1Week8Lab`
 
 `cd ps`
 
@@ -106,12 +108,11 @@ Fix any issues and then build.
 You can also use the pipe and where-object (where) cmdlet.  
 Add single quotes instead of double quotes
 
-
-`cp -rp newcommand ps`
+`xcopy /E /I newcommand Question1Week9Lab`
 
 `cd ps`
 
-`nano command.yaml`
+`notepad command.yaml`
 
      ---
        # Invoke powershell and run the get-process command
