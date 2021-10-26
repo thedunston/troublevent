@@ -1,0 +1,22 @@
+---
+ # If there is only one command to run with switches then
+ # only Cmd needs to be set
+ # On Windows, the pipe can be used for Powershell without having
+ # to use the Pipe: setting.
+ # Windows Example
+ # Cmd: "powershell get-Process | where {$_.ProcessName -eq 'chrome' }"
+ Cmd: "powershell get-childitem c:\ "
+ # Pipe is used when the output from the Cmd above needs
+ # to be sent into another command
+ # such as ps -ef | grep chrome
+ # Don't add the pipe sign.
+ # Currently only one pipe is supported
+ # Ex.
+ # Cmd: ps -ef
+ #Pipe: "grep chrom"
+ # is the equivalent of:  ps -ef |grep chrom
+ #
+ # For commands that modify, restart services, or create a security event provide a scenario to the user
+ # so they have some context to the problem.
+ # Or just ask the user what command was used to generate the output
+ msg: "What command was used to create the output above?"
