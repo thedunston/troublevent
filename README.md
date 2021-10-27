@@ -1,7 +1,6 @@
 # troublevent
 
-Troublevent is a program to create scenarios to help learn troubleshooting and interpreting system admin tasks. It is designed for schools, training providers, etc.
-
+Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, etc.
 
 ## When to use troublevent?
 
@@ -63,7 +62,7 @@ It is recommended to provide a name so it is easier to know which binary it is.
 
 `cp -rp fileedit Week2Lab3`
 
-`cd dhcpd`
+`cd Week2Lab3`
 
 `nano replace.yaml`
 
@@ -99,7 +98,7 @@ Fix any issues and then build.
 
 `cp -rp newcommand Question1Week8Lab`
 
-`cd ps`
+`cd Question1Week8Lab`
 
 `nano command.yaml`
 
@@ -120,7 +119,7 @@ Add single quotes instead of double quotes
 
 `xcopy /E /I newcommand Question1Week9Lab`
 
-`cd ps`
+`cd Question1Week9Lab`
 
 `notepad command.yaml`
 
