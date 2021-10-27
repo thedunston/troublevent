@@ -1,3 +1,22 @@
+/**
+
+This will replace text within a configuration file.
+
+First, a backup of the original file is created with the extension ".troublevent"
+
+Then the edit is made to the configuration file.
+
+Passing the argument:
+
+undo
+
+after the script will replace the original configuration file and delete the file with the
+.troublevent extension.
+
+./replace undo
+
+*/
+
 package main
 
 import (
@@ -9,6 +28,7 @@ import (
 	"os/exec"
 	"fmt"
 	"github.com/spf13/viper"
+	"strings"
 )
 
 // Renames the original file with .troublevent extension
@@ -133,32 +153,36 @@ func main() {
 	}
 
 	// Check to see if the user wants to undo changes
-	if os.Args[1] == "undo" {
 
-		// Remove the file that is broken
-		os.Remove(theFile)
+	if len(os.Args) > 1 {
 
-		if err != nil {
+		if os.Args[1] == "undo" {
 
-			log.Fatal(err)
+			// Remove the file that is broken
+			os.Remove(theFile)
+
+			if err != nil {
+
+				log.Fatal(err)
+
+			}
+
+			// Replace with the original file
+			changeFilename(theFile + ".troublevent",theFile)
+
+			// Delete the triblet backup	
+			os.Remove(theFile + ".troublevent")
+			if err != nil {
+
+				log.Fatal(err)
+
+			}
+
+			fmt.Printf("\nOriginal file restored => " + theFile + "\n")
+
+			os.Exit(0)
 
 		}
-
-		// Replace with the original file
-		changeFilename(theFile + ".troublevent",theFile)
-
-		// Delete the triblet backup	
-		os.Remove(theFile + ".troublevent")
-		if err != nil {
-
-			log.Fatal(err)
-
-		}
-
-		fmt.Printf("\nOriginal file restored => " + theFile + "\n")
-
-		os.Exit(0)
-
 	}
 
 	// Check if file exists
@@ -178,13 +202,15 @@ func main() {
 
 	}
 
-	fmt.Println(toRestart)
-	fmt.Println(restartService)
 	if toRestart == "yes" {
 
-		cmd := exec.Command(restartService)
+		// Split the command using spaces to restart the service
+                args := strings.Fields(restartService)
 
-		_, err := cmd.StdinPipe()
+		cmd := exec.Command(args[0], args[1:]...)
+
+		// .Run allows restarting network systemd scripts
+		err := cmd.Run()
 		if err != nil {
 
 			log.Fatal(err)

@@ -1,17 +1,17 @@
 ---
  # Filename to search and replace
- theFile: "/etc/bind/named.conf"
+ theFile: "/etc/apache2/ports.conf"
  # Text to search for
- toSearch: "category"
+ toSearch: "80"
  # Text to replace.  For real-world context, make it something the user is likely
  # to mistype such as "netmaks" instead of "netmask."
  # You can also leave off a semicolon or a curly brace.
- toReplaceWith: "categorry"
+ toReplaceWith: "81"
  # Whether or not a service needs to be restarted
  # yes or no
  toRestart: "yes"
  # Service to restart command
- theService: "systemctl restart named"
+ theService: "service apache2 restart"
 
  # Or just ask the user what command was used to generate the output
- theMsg: "`You just edited the /etc/bind/named.conf file and restarted it."
+ theMsg: "You just edited the apache configuration file, restarted the service, and users are not able to access the wweb server."
