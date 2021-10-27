@@ -2,23 +2,37 @@
 
 Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, etc.
 
+## What exactly does it do?
+
+In my cybersecurity and system admin classes, I want students to learn troubleshooting.  Using troublevent, a triblet (a single instance of a binary) can be created that will edit a configuration file such as "/etc/dhcp/dhcpd.conf" and then restart the service.  The 'edit' may change a setting that causes the DHCP server to not work properly or offers IP addresses not valid for the LAN.  The student has to go through troubleshooting processes to find the issue and correct it.  The binary they run is created by an instructor or anyone teaching troubleshooting.  A message is printed after the change is made with a statement explaining what they 'would' have done.  For example, in the previous scenario a message may be:
+
+    You have just edited the DHCP configuration file and restarted the service.  Users are reporting they are not able to obtain an IP address.
+    
+that way it provides some context to what they should be looking for because that is likely how they will recognize problems, when the users start reporting problems.
+
+It is recommended to keep the scenarios as realistic as possible.
+
+## Do I have to know programming?
+
+No, you edit a yaml file and add the command to run or the file to edit and the search and replace keywords and a message.  The binary will be compiled and you can distirbute it to your students, upload to a webserver or as an attachment to an assignment on an LMS.  Triblets can be created for Windows, MacOS, and Linux.
+
 ## When to use troublevent?
 
-First, each program created is a called a triblet (I needed a cool name) and is a compiled binary executable.
+If you are an educator teaching a system administration course, you can have the triblet edit a configuration file with a typo and restart the service and the student has to figure out the problem.
 
-If you are an educator teaching a system administration course, you can edit a configuration file with a typo and restart the service and the student has to figure out the problem.
+You may want users to be able to ensure they are typing the right command to give them the expected output.  You can add a command that prints out specific output and the student has to explain which command was executed.  For example, the triblet prints the output of - lsof -i -n.  The student has to respond that the command "lsof -i -n" was executed to produce the output.
 
-You may want users to be able to ensure they are typing the right command to give them the expected output.  You can add a command that prints out specific output and the student has to explain which command was executed.
-
-Create security events that require the user to investigate.  Example, brute force a web server, or SSH server on a lab server, or generate a ransomware attack on the lab host.
+Create security events that require the user to investigate.  Example, brute force a web server, or SSH server on a lab server, or generate a ransomware attack on the lab host.  Run triblets on Kali to perform scans or other attacks and the student has to investigate the incident.  Run on Windows and call Atomic Red Team scripts to emulate adversary behaviors or test the logging and alert capbilities for an organization.
 
 ## TODO:
 
-Add a web server and sqlite to keep track of triblets assigned.
+- Add a web server to keep track of triblets assigned.
 
-Randomly assign triblets for an assignment, DB backend to track users and the triblets they receive through web auth or some sort of auth.
+- Randomly assign triblets for an assignment, DB backend to track users and the triblets they receive through web auth or some sort of auth.
 
-Run multiple commands to simulate behavior for an investigation.
+- Run multiple commands to simulate behavior for an investigation. (Atomic Read Team tests could be a triblet to generate adversarial behavior)
+
+- Support commands with multiple pipes - currently only one is supported.
 
 ## Setup
 
