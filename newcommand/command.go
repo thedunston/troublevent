@@ -1,3 +1,13 @@
+/**
+
+A command will be executed without the Pipe or with one.
+
+The yaml variable thePipe is checked to see if it is empty.  If it is then it will execute a single command.
+
+Otherwise. it will invoke a pipe using Go.  Note that the command to run should not have the pipe in it.
+
+*/
+
 package main
 
 import (
@@ -99,7 +109,8 @@ func main() {
 		cmd := exec.Command(args[0], args[1:]...)
 
 		// Create stdin pipe to send results
-		stdin, err := cmd.StdinPipe()
+		//stdin, err := cmd.StdinPipe()
+		err := cmd.Run()
 
 		if err != nil {
 	
@@ -107,6 +118,7 @@ func main() {
 	
 		}
 	
+/**
 		go func() {
 	
 			defer stdin.Close()
@@ -114,6 +126,8 @@ func main() {
 			io.WriteString(stdin, "values written to stdin are passed to cmd's standard input")
 	
 		}()
+
+*/
 
 	        out, err := cmd.CombinedOutput()
 	        if err != nil {
