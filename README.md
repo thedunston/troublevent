@@ -72,6 +72,10 @@ It is recommended to provide a name so it is easier to know which binary it is.
 
 `go build -o LabNameAndNumberGoesHere.exe`
 
+When performing file edits, run the compiled binary with "undo" to restore the original configuration file.  In the example above, it would be:
+
+`./LabNameAndNumberGoesHere undo`
+
 # Sample Triblets:
 
 ### Edit the /etc/dhcp/dhcpd.conf file and change "netmask" to netmasks."  It is best to have the configuration change as real as possible so it simulates a real-world mistake.
