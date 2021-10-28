@@ -97,9 +97,8 @@ It is recommended to provide a name so it is easier to know which binary it is.
       theService: "systemctl restart named"
 
       #Or just ask the user what command was used to generate the output
-      theMsg: "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Check if users can get a DHCP address, if not fix the issue." 
+      theMsg: "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address." 
  
-
 save the file
 
 `go run replace.go`
@@ -107,6 +106,8 @@ save the file
 Fix any issues and then build.
 
 `go build -o Week2Lab3.bin`
+
+The student executes "Week2Lab3.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address..  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
 
 ### Create a binary that runs ps -ef and the student has to determine the command that printed the output.
 
@@ -126,6 +127,8 @@ Save the file and run:
 Fix any issues and then build.
 
 `go build -o Question1Week8Lab.bin`
+
+The student executes "Question1Week8Lab.bin" and should be able to response that the output produced was from the command -  ps -ef
 
 ### On Windows Create a binary that runs the Get-Process cmdlet.
 You can also use the pipe and where-object (where) cmdlet.  
@@ -150,3 +153,5 @@ Save the file and run:
 Fix any issues and then build.
 
 `go build -o Question1Week9Lab.exe`
+
+The student executes 'Question1Week9Lab.exe' and should be able to respond that the cmdlet Get-Process was executed based on the output.
