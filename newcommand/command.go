@@ -15,23 +15,66 @@ package main
 import (
 	"fmt"
 	"io"
-	"log"
+	//"log"
 	"os"
 	"os/exec"
 	"github.com/spf13/viper"
 	"strings"
 	"bytes"
+	"io/ioutil"
+	"embed"
 
 )
 
+/* The below function checks if a regular file (not directory) with a
+   given filepath exist */
+   func FileExists (filepath string) bool {
+
+	           fileinfo, err := os.Stat(filepath)
+
+		       if os.IsNotExist(err) {
+			                       return false
+					               }
+						               // Return false if the fileinfo says the file path is a directory.
+							               return !fileinfo.IsDir()
+							       }
+
+
+func check(e error) {
+
+	if e != nil {
+
+                if FileExists ("_emcommand.yaml") {
+
+			os.Remove("_emcommand.yaml")
+		}
+
+		panic(e)
+
+        }
+
+}
+
+
+//go:embed "command.yaml"
+var g embed.FS
+
 func main() {
 
+	// Get embedded yaml file.
+        data, err := g.ReadFile("command.yaml")
+	check(err)
+
+        // Write to a temporary file
+        err = ioutil.WriteFile("_emcommand.yaml", []byte(data), 0600)
+        check(err)
+
 	// Config file. Don't add the file extension.
-        viper.SetConfigName("command")
+        viper.SetConfigName("_emcommand")
         viper.SetConfigType("yaml")
         viper.AddConfigPath(".")
 
-        err := viper.ReadInConfig()
+        err = viper.ReadInConfig()
         if err != nil {
                 fmt.Println("fatal error config file: default \n", err)
                 os.Exit(1)
@@ -41,6 +84,10 @@ func main() {
 	theCmd := viper.GetString("Cmd")
 	thePipe := viper.GetString("Pipe")
 	theMsg := viper.GetString("msg")
+
+	// Delete temp yaml file.
+	err = os.Remove("_emcommand.yaml")
+	check(err)
 
 
 	// If there is a command to pipe
@@ -113,28 +160,10 @@ func main() {
 		// Create stdin pipe to send results
 		//stdin, err := cmd.StdinPipe()
 		err := cmd.Run()
-
-		if err != nil {
-	
-			log.Fatal(err)
-	
-		}
-	
-/**
-		go func() {
-	
-			defer stdin.Close()
-	
-			io.WriteString(stdin, "values written to stdin are passed to cmd's standard input")
-	
-		}()
-
-*/
+		check(err)
 
 	        out, err := cmd.CombinedOutput()
-	        if err != nil {
-	                log.Fatal(err)
-	        }
+		check(err)
 																	        fmt.Printf("%s\n", out)
 	
 		// Print the message

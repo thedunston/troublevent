@@ -12,38 +12,71 @@ package main
 
 import (
 
-	"io"
-	"log"
+//	"io"
+//	"log"
 	"os"
 	"os/exec"
 	"fmt"
 	"github.com/spf13/viper"
+	_ "embed"
+	"embed"
+	"io/ioutil"
 
 )
+
+/* The below function checks if a regular file (not directory) with a
+   given filepath exist */
+func FileExists (filepath string) bool {
+
+	fileinfo, err := os.Stat(filepath)
+
+    if os.IsNotExist(err) {
+		return false
+	}
+	// Return false if the fileinfo says the file path is a directory.
+	return !fileinfo.IsDir()
+}
 
 func check(e error) {
 
 	if e != nil {
+
+		if FileExists(
+
+			os.Remove("_emscript.yaml")
+			os.Remove("first.bash")
+
+		)
+
 		panic(e)
 	}
 
 }
 
+/* Embeds the yaml file so the binary can be portable. */
+//go:embed "script.yaml"
+var g embed.FS
+
 func main() {
 
+
+	// Get embedded yaml file.
+	data, err := g.ReadFile("script.yaml")
+	check(err)
+
+	// Write to a temporary file
+	err = ioutil.WriteFile("_emscript.yaml", []byte(data), 0600)
+	check(err)
+
 	// Config
-	viper.SetConfigName("script") // config file name without extension
+	viper.SetConfigName("_emscript")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AutomaticEnv()             // read value ENV variable
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 
-	if err != nil {
-
-		fmt.Println("fatal error config file: default \n", err)
-		os.Exit(1)
-	}
+	check(err)
 
 	// Get the triblets:
 	theFile := viper.GetString("theFile")

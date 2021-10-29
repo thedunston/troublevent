@@ -29,7 +29,41 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"strings"
+	"embed"
 )
+
+/* The below function checks if a regular file (not directory) with a given filepath exist */
+ 
+   func configFileExists (filepath string) bool {
+
+                   fileinfo, err := os.Stat(filepath)
+
+                       if os.IsNotExist(err) {
+                                               return false
+                                                       }
+
+// Return false if the fileinfo says the file path is a directory.
+
+        return !fileinfo.IsDir()
+
+}
+
+
+func check(e error) {
+
+        if e != nil {
+
+                if configFileExists ("_emreplace.yaml") {
+
+                        os.Remove("_emreplace.yaml")
+                }
+
+                panic(e)
+
+        }
+
+}
+
 
 // Renames the original file with .troublevent extension
 func changeFilename(filename string, newFilename string) {
@@ -121,15 +155,27 @@ func renameOrigFile(filename string, newPath string) {
 
 }
 
+//go:embed "replace.yaml"
+var g embed.FS
+
 func main() {
 
+	// Get embedded yaml file.
+        data, err := g.ReadFile("replace.yaml")
+        check(err)
+
+        // Write to a temporary file
+        err = ioutil.WriteFile("_emreplace.yaml", []byte(data), 0600)
+        check(err)
+
+
 	// Config
-	viper.SetConfigName("replace") // config file name without extension
+	viper.SetConfigName("_emreplace") // config file name without extension
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AutomaticEnv()             // read value ENV variable
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 
 	if err != nil {
 
@@ -144,6 +190,11 @@ func main() {
 	toRestart := viper.GetString("toRestart")
 	restartService := viper.GetString("theService")
 	theMsg := viper.GetString("theMsg")
+
+	// Delete temp yaml file.
+        err = os.Remove("_emreplace.yaml")
+        check(err)
+
 
 	// File to edit.
 	input, err := ioutil.ReadFile(theFile)
