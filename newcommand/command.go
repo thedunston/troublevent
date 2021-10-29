@@ -28,7 +28,7 @@ import (
 
 /* The below function checks if a regular file (not directory) with a
    given filepath exist */
-   func FileExists (filepath string) bool {
+   func configFileExists (filepath string) bool {
 
 	           fileinfo, err := os.Stat(filepath)
 
@@ -44,7 +44,7 @@ func check(e error) {
 
 	if e != nil {
 
-                if FileExists ("_emcommand.yaml") {
+                if configFileExists ("_emcommand.yaml") {
 
 			os.Remove("_emcommand.yaml")
 		}
