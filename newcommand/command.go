@@ -15,46 +15,38 @@ package main
 import (
 	"fmt"
 	"io"
-	//"log"
 	"os"
 	"os/exec"
 	"github.com/spf13/viper"
 	"strings"
 	"bytes"
-	"io/ioutil"
 	"embed"
 
 )
 
 /* The below function checks if a regular file (not directory) with a
-   given filepath exist */
-   func configFileExists (filepath string) bool {
+   given filepath exist 
+   https://www.algotree.org/algorithms/snippets/go_check_if_file_exists/ */
+func configFileExists (filepath string) bool {
 
-	           fileinfo, err := os.Stat(filepath)
+	fileinfo, err := os.Stat(filepath)
 
-		       if os.IsNotExist(err) {
-			                       return false
+	if os.IsNotExist(err) {
+		return false
 					               }
-						               // Return false if the fileinfo says the file path is a directory.
-							               return !fileinfo.IsDir()
-							       }
-
+	// Return false if the fileinfo says the file path is a directory.
+	return !fileinfo.IsDir()
+}
 
 func check(e error) {
 
 	if e != nil {
-
-                if configFileExists ("_emcommand.yaml") {
-
-			os.Remove("_emcommand.yaml")
-		}
 
 		panic(e)
 
         }
 
 }
-
 
 //go:embed "command.yaml"
 var g embed.FS
@@ -65,30 +57,15 @@ func main() {
         data, err := g.ReadFile("command.yaml")
 	check(err)
 
-        // Write to a temporary file
-        err = ioutil.WriteFile("_emcommand.yaml", []byte(data), 0600)
-        check(err)
+	var _emcommand = []byte(data)
 
-	// Config file. Don't add the file extension.
-        viper.SetConfigName("_emcommand")
         viper.SetConfigType("yaml")
-        viper.AddConfigPath(".")
-
-        err = viper.ReadInConfig()
-        if err != nil {
-                fmt.Println("fatal error config file: default \n", err)
-                os.Exit(1)
-        }
+        viper.ReadConfig(bytes.NewBuffer(_emcommand))
 
 	// Get the triblet commands:
-	theCmd := viper.GetString("Cmd")
-	thePipe := viper.GetString("Pipe")
-	theMsg := viper.GetString("msg")
-
-	// Delete temp yaml file.
-	err = os.Remove("_emcommand.yaml")
-	check(err)
-
+	theCmd := viper.Get("Cmd").(string)
+	thePipe := viper.Get("Pipe").(string)
+	theMsg := viper.Get("msg").(string)
 
 	// If there is a command to pipe
 	if (len(thePipe) != 0) {
@@ -132,25 +109,25 @@ func main() {
 	
 		// Close the writer
 	        writer.Close()
-	
+
 		// Waits for the second command to complete
 	        cmd2.Wait()
-		
+
 		// Close the reader
 		reader.Close()
-	
+
 		// Converting the command results to a string
 	        output := buff.String()
-	
+
 		// Print the results
 		fmt.Printf("%s", output)
 		fmt.Println("\n\n************************************************************")
 		fmt.Printf("\n%s\n\n", theMsg)
 		fmt.Println("************************************************************\n\n")
-	
+
 	// Otherwise run the one command.
 	} else {
-	
+
 		// Split the command string
 		args := strings.Fields(theCmd)
 
@@ -164,14 +141,13 @@ func main() {
 
 	        out, err := cmd.CombinedOutput()
 		check(err)
-																	        fmt.Printf("%s\n", out)
-	
+	        fmt.Printf("%s\n", out)
+
 		// Print the message
 		fmt.Println("************************************************************")
 		fmt.Printf("\n%s\n\n", theMsg)
 		fmt.Println("************************************************************")
 
 	}
-
 
 }

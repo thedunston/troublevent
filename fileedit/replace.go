@@ -53,11 +53,6 @@ func check(e error) {
 
         if e != nil {
 
-                if configFileExists ("_emreplace.yaml") {
-
-                        os.Remove("_emreplace.yaml")
-                }
-
                 panic(e)
 
         }
@@ -164,37 +159,18 @@ func main() {
         data, err := g.ReadFile("replace.yaml")
         check(err)
 
-        // Write to a temporary file
-        err = ioutil.WriteFile("_emreplace.yaml", []byte(data), 0600)
-        check(err)
+	var _emcommand = []byte(data)
 
-
-	// Config
-	viper.SetConfigName("_emreplace") // config file name without extension
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	viper.AutomaticEnv()             // read value ENV variable
-
-	err = viper.ReadInConfig()
-
-	if err != nil {
-
-		fmt.Println("fatal error config file: default \n", err)
-		os.Exit(1)
-	}
+        viper.SetConfigType("yaml")
+        viper.ReadConfig(bytes.NewBuffer(_emcommand))
 
 	// Get the triblets:
-	theFile := viper.GetString("theFile")
-	toSearch := viper.GetString("toSearch")
-	toReplaceWith := viper.GetString("toReplaceWith")
-	toRestart := viper.GetString("toRestart")
-	restartService := viper.GetString("theService")
-	theMsg := viper.GetString("theMsg")
-
-	// Delete temp yaml file.
-        err = os.Remove("_emreplace.yaml")
-        check(err)
-
+	theFile := viper.Get("theFile").(string)
+	toSearch := viper.Get("toSearch").(string)
+	toReplaceWith := viper.Get("toReplaceWith").(string)
+	toRestart := viper.Get("toRestart").(string)
+	restartService := viper.Get("theService").(string)
+	theMsg := viper.Get("theMsg").(string)
 
 	// File to edit.
 	input, err := ioutil.ReadFile(theFile)

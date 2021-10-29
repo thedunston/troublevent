@@ -12,41 +12,21 @@ package main
 
 import (
 
-//	"io"
-//	"log"
 	"os"
 	"os/exec"
+	"os/signal"
 	"fmt"
 	"github.com/spf13/viper"
 	_ "embed"
 	"embed"
-	"io/ioutil"
+	"bytes"
+	"syscall"
 
 )
-
-/* The below function checks if a regular file (not directory) with a
-   given filepath exist */
-func FileExists (filepath string) bool {
-
-	fileinfo, err := os.Stat(filepath)
-
-    if os.IsNotExist(err) {
-		return false
-	}
-	// Return false if the fileinfo says the file path is a directory.
-	return !fileinfo.IsDir()
-}
 
 func check(e error) {
 
 	if e != nil {
-
-		if FileExists(
-
-			os.Remove("_emscript.yaml")
-			os.Remove("first.bash")
-
-		)
 
 		panic(e)
 	}
@@ -64,39 +44,17 @@ func main() {
 	data, err := g.ReadFile("script.yaml")
 	check(err)
 
-	// Write to a temporary file
-	err = ioutil.WriteFile("_emscript.yaml", []byte(data), 0600)
-	check(err)
+	var _emscript = []byte(data)
 
-	// Config
-	viper.SetConfigName("_emscript")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	viper.AutomaticEnv()             // read value ENV variable
+        viper.SetConfigType("yaml")
+        viper.ReadConfig(bytes.NewBuffer(_emscript))
 
-	err = viper.ReadInConfig()
-
-	check(err)
-
-	// Get the triblets:
-	theFile := viper.GetString("theFile")
-	theShell := viper.GetString("theShell")
-	theScript := viper.GetString("theScript")
-	theMsg := viper.GetString("theMsg")
-
-	check(err)
-	// Create the script and make it executable
-	f, err := os.OpenFile(theFile, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0700,)
-
-	check(err)
-
-	defer f.Close()
-
-	// Write the script to the file.
-	_, err2 := f.Write([]byte(theScript))
-
-	check(err2)
-	defer f.Close()
+	// Get the triblets
+	// Convert values to a string
+	theFile := viper.Get("theFile").(string)
+	theShell := viper.Get("theShell").(string)
+	theScript := viper.Get("theScript").(string)
+	theMsg := viper.Get("theMsg").(string)
 
 	// Message to the user so the don't get impatient.
 	// if the script runs a while.
@@ -104,15 +62,32 @@ func main() {
 	//err = os.Chmod(theFile, 0700)
 	check(err)
 
+	// Create file
+	f, err := os.Create(theFile)
+	check(err)
+
+	// Write the script to the file.
+        _, err2 := f.Write([]byte(theScript))
+
+        check(err2)
+        defer f.Close()
+
+        // Message to the user so the don't get impatient.
+        // if the script runs a while.
+        fmt.Println("Please wait, this may take time to run...")
+        //err = os.Chmod(theFile, 0700)
+        check(err)
+
 	// Execute the command
 	cmd := exec.Command(theShell, theFile)
-
 	err = cmd.Run()
 	check(err)
+	fmt.Printf("Command finished with error: %v", err)
 
 	// If no errors, print the message
 	fmt.Println("\n**************************\n")
 	fmt.Println(theMsg)
 	fmt.Println("\n**************************\n")
+
 
 }
