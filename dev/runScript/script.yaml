@@ -1,0 +1,20 @@
+---
+ # Filename for the script
+ theFile: "first.bash"
+ theShell: "/usr/bin/bash"
+ # For the script, indent 2 spaces under "theScript: |-2
+ # In order to preserve the newlines.
+ theScript: |-2
+   #!/bin/bash
+ 
+   ls -l /tmp > output
+   ps -ef >>output
+   lsof -i -n >> output
+    
+ 
+ # Need admin access:  yes or no
+ needAdmin: yes
+ adminUser: root
+
+ # Or just ask the user what command was used to generate the output
+ theMsg: "THE MESSAGE TO THE USER GOES HERE."
