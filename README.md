@@ -38,7 +38,7 @@ Create security events that require the user to investigate.  Example, brute for
 
 ## Setup
 
-This program uses Golang and the Viper module.
+This program uses Golang (v 1.16+) and the Viper module.  Version 1.16+ is required to make use of the `go:embed` module which embeds the yaml file within the binary.
 
 You will need to download Go.
 
