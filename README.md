@@ -1,6 +1,6 @@
 # troublevent
 
-Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, etc.
+Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, training new hires, CTFs, refreshing skills with a colleagues assistance, etc.
 
 ## What exactly does it do?
 
@@ -22,7 +22,7 @@ If you are an educator teaching a system administration course, you can have the
 
 You may want users to be able to ensure they are typing the right command to give them the expected output.  You can add a command that prints out specific output and the student has to explain which command was executed.  For example, the triblet prints the output of - lsof -i -n.  The student has to respond that the command "lsof -i -n" was executed to produce the output.
 
-Create security events that require the user to investigate.  Example, brute force a web server, or SSH server on a lab server, or generate a ransomware attack on the lab host.  Run triblets on Kali to perform scans or other attacks and the student has to investigate the incident.  Run on Windows and call Atomic Red Team scripts to emulate adversary behaviors or test the logging and alert capbilities for an organization.
+Create security events that require the user to investigate.  Example, brute force a web server, or SSH server on a lab server, or generate a ransomware attack on the lab host.  Run a triblet on Kali to perform scans or other attacks and the student has to investigate the incident.  Run on Windows and call Atomic Red Team scripts to emulate adversary behaviors or test the logging and alert capbilities for an organization.
 
 ## TODO:
 
@@ -33,6 +33,8 @@ Create security events that require the user to investigate.  Example, brute for
 - Run multiple commands to simulate behavior for an investigation. (Atomic Read Team tests could be a triblet to generate adversarial behavior)
 
 - Support commands with multiple pipes - currently only one is supported.
+
+- Create a GUI instead of editing the YAML file and build the binary.
 
 ## Setup
 
@@ -70,13 +72,17 @@ It is recommended to provide a name so it is easier to know which binary it is.
 
 `go build -o LabNameAndNumberGoesHere.exe`
 
+When performing file edits, run the compiled binary with "undo" to restore the original configuration file.  In the example above, it would be:
+
+`./LabNameAndNumberGoesHere undo`
+
 # Sample Triblets:
 
 ### Edit the /etc/dhcp/dhcpd.conf file and change "netmask" to netmasks."  It is best to have the configuration change as real as possible so it simulates a real-world mistake.
 
-`cp -rp fileedit Week2Lab3`
+`cp -rp fileedit Lab23`
 
-`cd Week2Lab3`
+`cd Lab23`
 
 `nano replace.yaml`
 
@@ -105,9 +111,9 @@ save the file
 
 Fix any issues and then build.
 
-`go build -o Week2Lab3.bin`
+`go build -o Lab23.bin`
 
-The student executes "Week2Lab3.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address..  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
+During a bootcamp, the student reads the lab guide and unzips the respective file "Lab23.zip."  Inside is the file Lab23.bin The student executes "Lab23.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address..  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
 
 ### Create a binary that runs ps -ef and the student has to determine the command that printed the output.
 
@@ -128,7 +134,7 @@ Fix any issues and then build.
 
 `go build -o Question1Week8Lab.bin`
 
-The student executes "Question1Week8Lab.bin" and should be able to response that the output produced was from the command -  ps -ef
+The student downloads the file Question1Week8Lab.bin from an LMS as part of an assignment executes "Question1Week8Lab.bin" and should be able to response that the output produced was from the command -  ps -ef
 
 ### On Windows Create a binary that runs the Get-Process cmdlet.
 You can also use the pipe and where-object (where) cmdlet.  
@@ -154,4 +160,4 @@ Fix any issues and then build.
 
 `go build -o Question1Week9Lab.exe`
 
-The student executes 'Question1Week9Lab.exe' and should be able to respond that the cmdlet Get-Process was executed based on the output.
+The triblet gets posted to a web server and the student downloads it and executes 'Question1Week9Lab.exe' and should be able to respond that the cmdlet Get-Process was executed based on the output.

@@ -6,6 +6,8 @@ The yaml variable thePipe is checked to see if it is empty.  If it is then it wi
 
 Otherwise. it will invoke a pipe using Go.  Note that the command to run should not have the pipe in it.
 
+Pipe code reference: https://gist.github.com/ochinchina/9e409a88e77c3cfd94c3
+
 */
 
 package main
