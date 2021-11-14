@@ -1,4 +1,0 @@
-Command:
-    Cmd: ls /tmp
-    Pipe: ""
-    msg: What command produced this output above?
