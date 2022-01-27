@@ -32,8 +32,6 @@ Create security events that require the user to investigate.  Example, brute for
 
 - Create a GUI instead of editing the YAML file and build the binary.
 
-NOTE: Running multiple commands and commands with multiple pipes can be performed using the 'runScript' creator.
-
 ## Setup
 
 This program uses Golang (v 1.16+) and the Viper module.  Version 1.16+ is required to make use of the `go:embed` module which embeds the yaml file within the binary.
