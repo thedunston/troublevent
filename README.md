@@ -130,7 +130,7 @@ Fix any issues and then build.
 
 `go build -o Question1Week8Lab.bin`
 
-The student downloads the file Question1Week8Lab.bin from an LMS as part of an assignment executes "Question1Week8Lab.bin" and should be able to response that the output produced was from the command -  ps -ef
+The student downloads the file Question1Week8Lab.bin from an LMS as part of an assignment executes "Question1Week8Lab.bin" and should be able to respond that the output produced was from the command -  ps -ef
 
 ### On Windows Create a binary that runs the Get-Process cmdlet.
 You can also use the pipe and where-object (where) cmdlet.  
@@ -159,7 +159,7 @@ Fix any issues and then build.
 The triblet gets posted to a web server and the student downloads it and executes 'Question1Week9Lab.exe' and should be able to respond that the cmdlet Get-Process was executed based on the output.
 
 ### Simulate an 'acker downloading a script, excuting it, and uploading the results.
-Here you can test a new hires forensic skills based on what information they ask for to start the investigation and the process they perform to determine what happened.  Test their network flow analysis and host-based forensic analysis skills to determine what occurred on the host.
+Here you can test a new hires forensic skills based on what information they ask for to start the investigation and the process they perform to determine what happened.  Test their network flow analysis and host-based forensic analysis skills to determine what occurred on the host.  The triblet below writes the file *first.bash* to the filesystem, and copies the script text under *theScript* into the file, executes it and then deletes the *first.bash* file before the triblet exits.
 
 `cp -r runscript Lab18`
 
