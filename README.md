@@ -1,5 +1,7 @@
 # troublevent
 
+Project Status: Actively Supported.
+
 Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, training new hires, CTFs, refreshing skills with a colleagues assistance, etc.
 
 ## What exactly does it do?
