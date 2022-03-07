@@ -111,7 +111,11 @@ Fix any issues and then build.
 
 `go build -o Lab23.bin`
 
-During a bootcamp, the student reads the lab guide and unzips the respective file "Lab23.zip."  Inside is the file Lab23.bin The student executes "Lab23.bin" and sees the message "You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address."  That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
+During a bootcamp, the student reads the lab guide and unzips the respective file "Lab23.zip."  Inside is the file Lab23.bin The student executes "Lab23.bin" and sees the message 
+
+    You just edited the /etc/dhcp/dhcpd.conf file and restarted the service. Users are reporting they are not able to receive an IP address.
+    
+That should queue them to check the appropriate log file to determine the error. DHCP is quite good at explaining the error and where it is located.
 
 ### Create a binary that runs ps -ef and the student has to determine the command that printed the output.
 
@@ -211,4 +215,6 @@ Fix any issues and then build.
 
 `go build -o Lab18.bin`
 
-You have a new incident response hire and assessing their skill level to determine the training and mentoring they need.  On a VM, the new hire downloads Lab18.bin and then sees the message "An IDS alerted to a host communicating with a known malicious IP. Investigate and find out what happened."
+You have a new incident response hire and assessing their skill level to determine the training and mentoring they need.  On a VM, the new hire downloads Lab18.bin, excutes it, and then sees the message:
+
+        An IDS alerted to a host communicating with a known malicious IP. Investigate and find out what happened.
