@@ -1,6 +1,7 @@
 # troublevent
 
 Project Status: Actively Supported.
+License: Troublevent © 2021 by Duane Dunston is licensed under Attribution-ShareAlike 4.0 International. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/
 
 Troublevent is a Troublemaker and Event creator (troublevent) to run scenarios to help learn troubleshooting, security investigations, and interpreting system admin tasks. It is designed for schools, training providers, training new hires, CTFs, refreshing skills with a colleagues assistance, etc.
 
